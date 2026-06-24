@@ -9,7 +9,16 @@ A native foobar2000 input plugin that streams shows from Mixcloud using [yt-dlp]
 - Optional cookie-based login (cookies.txt file or browser cookie store) for private/favorited shows, configurable in Preferences > Tools > Mixcloud.
 - Configurable yt-dlp path and audio format selector.
 
-## Building
+## Installation
+
+1. Make sure [yt-dlp](https://github.com/yt-dlp/yt-dlp) is installed and available on `PATH` (or note its full path to enter later in Preferences).
+2. Download the latest `foo_mixcloud-vX.Y.fb2k-component` file from the [Releases](https://github.com/zetmar-collab/foo_mixcloud/releases) page.
+3. In foobar2000, open **File > Preferences > Components > Install...** and select the downloaded `.fb2k-component` file.
+4. Confirm the restart prompt.
+5. (Optional) In **Preferences > Tools > Mixcloud**, set the yt-dlp path if it isn't on `PATH`, and configure cookie login if you need private/favorited shows.
+6. Use **File > Mixcloud > Add show or URL...** to paste a Mixcloud link and play it, or **File > Mixcloud > Add user's uploads...** to load a user's whole profile.
+
+## Building from source
 
 Requires:
 - Visual Studio 2022 Build Tools (v143 toolset) with the VC/ATL component
