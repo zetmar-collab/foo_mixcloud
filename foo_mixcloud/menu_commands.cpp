@@ -51,8 +51,34 @@ namespace {
 		pm->activeplaylist_add_locations(paths, true, core_api::get_main_window());
 	}
 
+	// Accepts either a bare username or a full Mixcloud profile/uploads URL
+	// (with or without scheme, trailing slash, or "/uploads") and returns
+	// just the username part.
+	pfc::string8 extract_username(const char* raw) {
+		pfc::string8 s = raw;
+		const char* p = s.get_ptr();
+		if (pfc::strcmp_partial(p, "https://") == 0) p += 8;
+		else if (pfc::strcmp_partial(p, "http://") == 0) p += 7;
+		if (pfc::strcmp_partial(p, "www.mixcloud.com/") == 0) p += 17;
+		else if (pfc::strcmp_partial(p, "mixcloud.com/") == 0) p += 13;
+
+		pfc::string8 out = p;
+		while (out.length() > 0 && out.get_ptr()[out.length() - 1] == '/') out.truncate(out.length() - 1);
+
+		const char* suffix = "/uploads";
+		t_size suffixLen = strlen(suffix);
+		if (out.length() >= suffixLen && strcmp(out.get_ptr() + out.length() - suffixLen, suffix) == 0) {
+			out.truncate(out.length() - suffixLen);
+		}
+
+		t_size slash = out.find_first('/');
+		if (slash != pfc::infinite_size) out.truncate(slash);
+
+		return out;
+	}
+
 	void AddUserUploads(const char* username) {
-		pfc::string8 user = username;
+		pfc::string8 user = extract_username(username);
 		if (user.is_empty()) return;
 
 		auto state = std::make_shared<pfc::string8>();
